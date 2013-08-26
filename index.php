@@ -1,0 +1,90 @@
+<?php
+require('lib/include.php');
+if (!isset($_SESSION['user']))
+  {
+    header("Location: login.php");
+    exit();
+  }
+$user = unserialize($_SESSION['user']);
+
+function getMessages($userid, $num)
+{
+  $db = new DB();
+  $db->query("SELECT * FROM `message` WHERE `user` = '$userid' LIMIT $num;");
+  $out = array();
+  for ($i = 0; $i < $db->num_rows(); $i++)
+    {
+      $out[] = $db->get_row();
+    }
+  return $out;
+}
+
+$messages = getMessages($user->id, 15);
+?>
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript">
+//  var publicKey = "<?php //print $user->pubkey; ?>";
+  var name = "<?php print $user->name; ?>";
+  var email = "<?php print $user->email; ?>";
+    </script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="openpgpjs/resources/openpgp.js"></script>
+    <script type="text/javascript" src="smail.js"></script>
+    <script type="text/javascript">
+      function smailOnLoad()
+      {
+      $(".enc").each(function(index) {
+      $(this).text = rsaDecrypt(openpgp.keyring.exportPrivateKey, $(this).text());
+      });
+      }
+      
+    </script>
+    <title>SecureMail</title>
+  </head>
+  <body onload="smailOnLoad()">
+    <div id="messages">
+      <h1 style="text-align: center;">SecureMail Inbox</h1>
+      <?php
+	 if (count($messages))
+	 {
+	 ?>
+      <h3>Message List:</h3>
+      <ol>
+	<?php
+	   foreach ($messages as $message)
+	   {
+	   ?>
+	<li onclick="showMessage(<?php print $message['id']; ?>)"><div><?php print $message['from']; ?></div><div><?php print $message['timestamp']; ?></div><div class=""><?php print $message['subject']; ?></div></li>
+	<?php
+	   }
+	   ?>
+      </ol>
+      <?php
+	 }
+	 else
+	 {
+	 ?>
+      <p>No messages to display!</p>
+      <?php
+	 }
+	 ?>
+    </div>
+    <div id="messagebox">
+      
+    </div>
+    <button onClick="logOff()">Log Off</button>
+    <br />
+    <div id="compose">
+      <p>Compose New Message:</p>
+      <form method="post" id="composeform" action="javascript: false;">
+	To: <input type="text" id="toemail" name="toemail" value="" onchange="determineEncStatus();" /><div id="emailstatus"></div><br />
+	Subject: <input type="text" name="subject" id="subject" value="" /><br />
+	<textarea name="message" id="message" rows="7" cols="25" tabindex=""></textarea><br />
+	<button onClick="sendMessage()">Send Message</button>
+      </form>
+    </div>
+  </body>
+  
+</html>
