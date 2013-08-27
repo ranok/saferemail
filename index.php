@@ -1,12 +1,21 @@
 <?php
-require('lib/include.php');
+require_once('lib/include.php');
+// Detect is the user is logged in, otherwise direct to login page
 if (!isset($_SESSION['user']))
   {
     header("Location: login.php");
     exit();
   }
+// Load the user object
 $user = unserialize($_SESSION['user']);
 
+/**
+ Function: getMessages
+ @param $userid ID of user to grab latest messages
+ @param $num Number of messages to return (max)
+
+ @return Assoc. array of at most $num of $userid's most recent messages 
+*/
 function getMessages($userid, $num)
 {
   $db = new DB();
@@ -53,6 +62,7 @@ $messages = getMessages($user->id, 15);
       <h3>Message List:</h3>
       <ol>
 	<?php
+	 // Show inbox
 	   foreach ($messages as $message)
 	   {
 	   ?>

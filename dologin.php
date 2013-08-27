@@ -1,7 +1,7 @@
 <?php
 require_once('lib/include.php');
-print_r($_POST);
 
+// Determine if creating new user or logging in
 switch ($_POST['method'])
   {
   case "create_user":
@@ -16,6 +16,11 @@ switch ($_POST['method'])
 header('Location: index.php');
 exit();
 
+/**
+ Function create_user
+
+ Creates a new user
+ */
 function create_user()
 {
   // Add error checking
@@ -26,23 +31,32 @@ function create_user()
   $u->encprivkey = $_POST['encprivkey'];
 
   $u->saveNew();
-  
+
+  // Reload to get user ID set
   $u->loadByEmail($_POST['email']);
   $_SESSION['user'] = serialize($u);
 }
 
+/**
+ Function login
+
+ Logs in a user
+ */
 function login()
 {
+  // TODO encrypt a nonce to the user's pubkey and verify that the user decrypted the privkey correctly
   if ($_POST['nonce'] == $_SESSION['nonce'])
     {
       unset($_SESSION['nonce']);
       $u = new User();
-      $u->lookupByEmail($_SESSION['loginemail']);
-      $_SESSION['user'] = $u;
+      $u->loadByEmail($_SESSION['loginemail']);
+      $_SESSION['user'] = serialize($u);
       unset($_SESSION['loginemail']);
     }
   else
     {
+      // Wrong nonce
+      unset($_SESSION['nonce']);
       header('Location: login.php?err=1');
       exit();
     }

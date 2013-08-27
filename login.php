@@ -31,7 +31,7 @@ if (isset($_SESSION['user']))
       Login with your username and password here:
     <form method="post" id="keyform" action="#" onSubmit="return false;">
       Email Address: <input type="text" name="email" value="" id="loginemail" /><br />
-      Password: <input type="password" name="password" value="loginpassword" /><br />
+      Password: <input type="password" name="password" id="loginpassword" /><br />
       <button onClick="login()">Login to SMail!</button>
     </form>
     </div>

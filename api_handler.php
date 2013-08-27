@@ -1,5 +1,9 @@
 <?php
 require_once('lib/include.php');
+// For encrypting nonce
+require_once('openpgpphp/lib/openpgp.php');
+require_once('openpgpphp/lib/openpgp_crypt_rsa.php');
+require_once('openpgpphp/lib/openpgp_crypt_aes_tripledes.php');
 
 switch ($_GET['method'])
   {
@@ -15,12 +19,43 @@ switch ($_GET['method'])
   case "get_message":
     get_message($_GET['id']);
     break;
+  case "get_enc_nonce":
+    gen_nonce($_GET['email']);
+    break;
+  case "get_enc_privkey":
+    get_enc_privkey($_GET['email']);
+    break;
   case "send":
     send_message($_POST['email'], $_POST['subject'], $_POST['message'], $_POST['post']);
     break;
   default:
     break;
   }
+
+function get_enc_privkey($email)
+{
+  $u = new User();
+  $u->loadByEmail($email);
+  if ($u->id == -1)
+    return;
+  print $u->encprivkey;
+}
+
+function gen_nonce($email)
+{  
+  $u = new User();
+  $u->loadByEmail($email);
+  if ($u->id == -1)
+    return;
+  
+  $key = OpenPGP_Message::parse(OpenPGP::unarmor($u->pubkey));
+  $rn = SMAIL_SALT.rand();
+  $_SESSION['loginemail'] = $email;
+  $_SESSION['nonce'] = $rn;
+  $data = new OpenPGP_LiteralDataPacket($rn, array('format' => 'u'));
+  $enc = OpenPGP_Crypt_AES_TripleDES::encrypt($key, new OpenPGP_Message(array($data)));
+  print OpenPGP::enarmor($enc->to_bytes(), "PGP MESSAGE");
+}
 
 function get_message($id)
 {

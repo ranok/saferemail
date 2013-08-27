@@ -193,5 +193,25 @@ function postToUrl(path, params, method) {
 
 function login()
 {
-    
+    var email = document.getElementById("loginemail").value;
+    $.ajax({
+	    url: "api_handler.php",
+		data: {method : "get_enc_privkey", email : email}
+	}).done(function (data) {
+		if (data != '')
+		    {
+			var privkey = symmetricDecrypt($("#loginpassword").val(), unescape(data));
+			openpgp.keyring.importPrivateKey(privkey);
+			$.ajax({
+				url: "api_handler.php",
+				    data: {method : "get_enc_nonce", email : email}
+			    }).done(function (data) {
+				    if (data != '')
+					{
+					    var nonce = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, data);
+					    postToUrl('dologin.php', {method: 'login', nonce: nonce});
+					}
+				});
+		    }
+	    });    
 }
