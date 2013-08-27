@@ -7,24 +7,31 @@ require_once('openpgpphp/lib/openpgp_crypt_aes_tripledes.php');
 
 switch ($_GET['method'])
   {
+    // Request a public key for some email address which may be using Safer Email
   case "get_public_key":
     get_public_key($_GET['email']);
     break;
+    // Determine if an email address is taken
   case "user_exists":
     user_exists($_GET['email']);
     break;
+    // Logoff
   case "logoff":
     unset($_SESSION['user']);
     break;
+    // Fetch a single message
   case "get_message":
     get_message($_GET['id']);
     break;
+    // Get an encrypted nonce
   case "get_enc_nonce":
     gen_nonce($_GET['email']);
     break;
+    // Get a user's encrypted private key
   case "get_enc_privkey":
     get_enc_privkey($_GET['email']);
     break;
+    // Send message
   case "send":
     send_message($_POST['email'], $_POST['subject'], $_POST['message'], $_POST['post']);
     break;

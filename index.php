@@ -19,7 +19,7 @@ $user = unserialize($_SESSION['user']);
 function getMessages($userid, $num)
 {
   $db = new DB();
-  $db->query("SELECT * FROM `message` WHERE `user` = '$userid' LIMIT $num;");
+  $db->query("SELECT * FROM `message` WHERE `user` = '$userid' ORDER BY `timestamp` DESC LIMIT $num;");
   $out = array();
   for ($i = 0; $i < $db->num_rows(); $i++)
     {
@@ -50,6 +50,8 @@ $messages = getMessages($user->id, 15);
       }
       
     </script>
+    <link rel="stylesheet" type="text/css" href="smail.css" media="screen" />
+    
     <title>SecureMail</title>
   </head>
   <body onload="smailOnLoad()">
@@ -60,7 +62,7 @@ $messages = getMessages($user->id, 15);
 	 {
 	 ?>
       <h3>Message List:</h3>
-      <ol>
+      <ol id="ml">
 	<?php
 	 // Show inbox
 	   foreach ($messages as $message)

@@ -200,18 +200,38 @@ function login()
 	}).done(function (data) {
 		if (data != '')
 		    {
-			var privkey = symmetricDecrypt($("#loginpassword").val(), unescape(data));
-			openpgp.keyring.importPrivateKey(privkey);
-			$.ajax({
-				url: "api_handler.php",
-				    data: {method : "get_enc_nonce", email : email}
-			    }).done(function (data) {
-				    if (data != '')
-					{
-					    var nonce = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, data);
-					    postToUrl('dologin.php', {method: 'login', nonce: nonce});
-					}
-				});
+			var privkey = '';
+			try
+			    {
+				privkey = symmetricDecrypt($("#loginpassword").val(), unescape(data));
+			    }
+			catch(err)
+			    {
+				// Do nothing
+			    }
+			if (privkey.match('-----BEGIN PGP'))
+			    {
+				openpgp.keyring.importPrivateKey(privkey);
+				openpgp.keyring.store();
+				$.ajax({
+					url: "api_handler.php",
+					    data: {method : "get_enc_nonce", email : email}
+				    }).done(function (data) {
+					    if (data != '')
+						{
+						    var nonce = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, data);
+						    postToUrl('dologin.php', {method: 'login', nonce: nonce});
+						}
+					});
+			    }
+			else
+			    {
+				alert("Sorry, incorrect username/password");
+			    }
+		    }
+		else
+		    {
+			alert("Sorry, incorrect username/password");
 		    }
 	    });    
 }
