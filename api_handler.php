@@ -115,6 +115,8 @@ function send_message($email, $subject, $message, $post)
 		      curl_setopt($ch, CURLOPT_URL, preg_replace('/^v=shmp1 /', '', $record));
 		      curl_setopt($ch, CURLOPT_POST, count($fields));
 		      curl_setopt($ch, CURLOPT_POSTFIELDS, $filds_string);
+		      curl_exec($ch);
+		      curl_close($ch);
 		    }
 		}
 	    }
