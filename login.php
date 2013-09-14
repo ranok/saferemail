@@ -33,7 +33,7 @@ if (isset($_SESSION['user']))
         <h3>Sign In</h3>
         <form method="post" action="#" onSubmit="return false;">
           
-          <div class="field_label">Username</div>
+          <div class="field_label">Username/Email</div>
           <input type="text" name="email" value="" id="loginemail" /><br />
         
           <div class="field_label">Password</div>

@@ -195,6 +195,8 @@ function postToUrl(path, params, method) {
 function login()
 {
     var email = document.getElementById("loginemail").value;
+    if (email.indexOf("@") == -1)
+	email = email + '@' + emaildomain;
     $.ajax({
 	    url: "api_handler.php",
 		data: {method : "get_enc_privkey", email : email}
