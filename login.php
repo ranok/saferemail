@@ -44,7 +44,7 @@ if (isset($_SESSION['user']))
             <button onClick="login()">Login to SMail!</button>
           
             <div style="float:right">
-              <a href="javascript:createAccount('login', 'create');">Create an account</a>
+              <a href="javascript:hideShowByID('login', 'create');">Create an account</a>
             </div>
           
           </div>

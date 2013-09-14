@@ -236,9 +236,13 @@ function login()
 	    });    
 }
 
-function createAccount(login_id, create_id) {
-	hideDiv(login_id);
-	showDiv(create_id);
+function loadFileDiv(id, file) {
+	$(id).load(file);
+}
+
+function hideShowByID(hide, show) {
+	hideDiv(hide);
+	showDiv(show);
 }
 
 function hideDiv(devid) { 
