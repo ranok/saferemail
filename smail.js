@@ -143,6 +143,7 @@ function logOff()
 function validateSmailEmail()
 {
     var email = $("#createemail").val() + '@' + emaildomain;
+    document.getElementById("createemailcheck").textContent = "";
     $.ajax({
 	    url: "api_handler.php",
 		data: {method : "user_exists", email : email}
