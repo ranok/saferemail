@@ -81,7 +81,7 @@ function send_message($email, $subject, $message, $post)
   if (!isset($_SESSION['user']))
     return;
   $user = unserialize($_SESSION['user']);
-  if ($post)
+  if ($post == 'true')
     {
       $exploded_email = explode('@', $email);
       $domain = $exploded_email[1];
@@ -129,7 +129,7 @@ function send_message($email, $subject, $message, $post)
     }
   else
     {
-      mail($email, 'Subject: '.$subject, $message);
+      mail($email, $subject, $message);
     }
 }
 
