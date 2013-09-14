@@ -109,7 +109,8 @@ function send_message($email, $subject, $message, $post)
 		      $fields = array(
 		      	      'subject' => urlencode($subject),
 			      'message' => urlencode($message),
-			      'from' => $user->email
+			      'to' => urlencode($email),
+			      'from' => urlencode($user->email)
 			      );
 		      $ch = curl_init();
 		      curl_setopt($ch, CURLOPT_URL, preg_replace('/^v=shmp1 /', '', $record));

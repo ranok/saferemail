@@ -44,7 +44,6 @@ function create_user()
  */
 function login()
 {
-  // TODO encrypt a nonce to the user's pubkey and verify that the user decrypted the privkey correctly
   if ($_POST['nonce'] == $_SESSION['nonce'])
     {
       unset($_SESSION['nonce']);
