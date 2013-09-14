@@ -11,6 +11,7 @@ if (isset($_SESSION['user']))
   <head>
     <script type="text/javascript">
       var emaildomain = "<?php print SMAIL_DOMAIN; ?>";
+      var keysize = <?php print SMAIL_KEYSIZE; ?>;
     </script>
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="openpgpjs/resources/openpgp.js"></script>

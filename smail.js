@@ -150,6 +150,8 @@ function validateSmailEmail()
 	}).done(function (data) {
 		if (data == 'false')
 		    document.getElementById("createemailcheck").textContent = email + " is available!";
+	        else
+		    document.getElementById("createemailcheck").textContent = "Sorry, " + email + " is not available";
 	    });
     
 }
@@ -158,7 +160,8 @@ function createUser()
 {
     var email = $("#createemail").val() + '@' + emaildomain;
     var name = $("#createname").val();
-    if (generateKey(name, email, 1024))
+    var bits = (keysize == null) ? 1024 : keysize;
+    if (generateKey(name, email, bits))
 	{
 	    var pubkey = openpgp.keyring.getPublicKeyForAddress(email)[0].armored;
 	    var privkey = openpgp.keyring.getPrivateKeyForAddress(email)[0].armored;

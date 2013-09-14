@@ -23,8 +23,10 @@ exit();
  */
 function create_user()
 {
-  // Add error checking
   $u = new User();
+  // Ensure there is not an existing user with the same email address
+  if($u->loadByEmail($_POST['email']))
+    return;
   $u->pubkey = $_POST['pubkey'];
   $u->name = $_POST['name'];
   $u->email = $_POST['email'];
