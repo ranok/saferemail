@@ -74,6 +74,7 @@ function symmetricEncrypt(key, message)
 function determineEncStatus()
 {
     var email = document.getElementById("toemail").value;
+    document.getElementById("emailstatus").textContent = "";
     $.ajax({
 	    url: "api_handler.php",
 		data: {method : "get_public_key", email : email}

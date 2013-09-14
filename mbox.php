@@ -1,6 +1,6 @@
 <?php
 require_once('lib/include.php');
-$exploded_email = explode('@', urldecode($_POST['to'])));	
+$exploded_email = explode('@', urldecode($_POST['to']));
 $domain = $exploded_email[1];
 $username = $exploded_email[0];
 
@@ -11,7 +11,7 @@ if ($domain == SMAIL_DOMAIN)
   if ($u->id != -1)
   {
     $db = new DB();
-    $message = $db->sanitize(urldecode($_POST['message']));
+    $message = $db->sanitize($_POST['message']);
     $from = $db->sanitize(urldecode($_POST['from']));
     $subject = $db->sanitize(urldecode($_POST['subject']));
 

@@ -106,16 +106,20 @@ function send_message($email, $subject, $message, $post)
 		{
 		  if (preg_match('/^v=shmp1 http/', $record))
 		    {
+		      // TODO Switch to http_build_query
+		      $fields_string = '';
 		      $fields = array(
 		      	      'subject' => urlencode($subject),
 			      'message' => urlencode($message),
 			      'to' => urlencode($email),
 			      'from' => urlencode($user->email)
 			      );
+		      foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+		      rtrim($fields_string, '&');
 		      $ch = curl_init();
 		      curl_setopt($ch, CURLOPT_URL, preg_replace('/^v=shmp1 /', '', $record));
 		      curl_setopt($ch, CURLOPT_POST, count($fields));
-		      curl_setopt($ch, CURLOPT_POSTFIELDS, $filds_string);
+		      curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
 		      curl_exec($ch);
 		      curl_close($ch);
 		    }
