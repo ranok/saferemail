@@ -1,0 +1,4 @@
+<?php
+define("SMAIL_DOMAIN", "DOMAIN.FQDN");
+define("SMAIL_SALT", "RANDOMSTRINGHERE");
+?>
