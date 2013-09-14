@@ -33,8 +33,8 @@ function generateKey(name, email, bits)
     if (window.crypto.getRandomValues)
 	{
 	    keys = openpgp.generate_key_pair(1, bits, name + " <" + email + ">");
-	    // document.getElementById("privatekey").innerText = keys["privateKeyArmored"];
-	    // document.getElementById("publickey").innerText = keys["publicKeyArmored"];
+	    // document.getElementById("privatekey").textContent = keys["privateKeyArmored"];
+	    // document.getElementById("publickey").textContent = keys["publicKeyArmored"];
 	    openpgp.keyring.importPrivateKey(keys["privateKeyArmored"]);
 	    openpgp.keyring.importPublicKey(keys["publicKeyArmored"]);
 	    openpgp.keyring.store();
@@ -81,11 +81,11 @@ function determineEncStatus()
 		if (data != '')
 		    {
 			toPubKey = openpgp.read_publicKey(data);
-			document.getElementById("emailstatus").innerText = "Public key found, message will be secured";
+			document.getElementById("emailstatus").textContent = "Public key found, message will be secured";
 		    }
 		else
 		    {
-			document.getElementById("emailstatus").innerText = "No public key found, message will NOT be secured";
+			document.getElementById("emailstatus").textContent = "No public key found, message will NOT be secured";
 		    }
 	    });
     
@@ -98,7 +98,7 @@ function showMessage(id)
 		data: {method: "get_message", id: id}
 	}).done(function (data) {
 		
-		document.getElementById("messagebox").innerText = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, data);
+		document.getElementById("messagebox").textContent = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, data);
 	    });
 }
 
@@ -148,7 +148,7 @@ function validateSmailEmail()
 		data: {method : "user_exists", email : email}
 	}).done(function (data) {
 		if (data == 'false')
-		    document.getElementById("createemailcheck").innerText = email + " is available!";
+		    document.getElementById("createemailcheck").textContent = email + " is available!";
 	    });
     
 }
