@@ -129,7 +129,7 @@ function send_message($email, $subject, $message, $post)
     }
   else
     {
-      mail($email, $subject, $message);
+      mail($email, $subject, $message, 'From: '.$user->name.' <'.$user->email.'>');
     }
 }
 
