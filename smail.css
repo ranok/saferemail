@@ -6,3 +6,49 @@ body {
     width: 75%;
     border: 1px dashed black;
 }
+
+#login_container {
+	font-family: helvetica;
+	margin: 80px auto;
+	width: 400px;
+}
+
+#login_container #login {
+	background: #f2f2f2;
+	border: 1px solid #888;
+	padding: 20px 0px;
+	font-size: 14px;
+}
+
+#login_container #create {
+	background: #f2f2f2;
+	border: 1px solid #888;
+	padding: 20px 0px;
+	font-size: 14px;
+}
+
+#login_container h3 {
+	font-size: 16px;
+	padding: 0px;
+	margin: 0px 0 20px 25px;
+}
+
+.field_label {
+	width: auto;
+	padding: 0;
+	text-align:left;
+	margin: 0px 25px 0px 25px;
+}
+
+form {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+input {
+	font-size: 14px;
+	width: 85%;
+	height: 1.8em;
+	margin: 4px 0 10px 0;
+}

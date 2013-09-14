@@ -235,3 +235,20 @@ function login()
 		    }
 	    });    
 }
+
+function createAccount(login_id, create_id) {
+	hideDiv(login_id);
+	showDiv(create_id);
+}
+
+function hideDiv(devid) { 
+	if (document.getElementById) { // DOM3 = IE5, NS6 
+		document.getElementById(devid).style.display = 'none'; 
+	}  
+}
+
+function showDiv(devid) { 
+	if (document.getElementById) { // DOM3 = IE5, NS6 
+		document.getElementById(devid).style.display = 'block'; 
+	} 
+} 

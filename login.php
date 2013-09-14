@@ -22,31 +22,55 @@ if (isset($_SESSION['user']))
 
       }
     </script>
-    
+    <link href="smail.css" rel="stylesheet" type="text/css">
+
     <title>SecureMail Login/Sign Up</title>
   </head>
   <body onLoad="smailOnLoad()">
-    
-    <div id="login">
-      Login with your username and password here:
-    <form method="post" id="keyform" action="#" onSubmit="return false;">
-      Email Address: <input type="text" name="email" value="" id="loginemail" /><br />
-      Password: <input type="password" name="password" id="loginpassword" /><br />
-      <button onClick="login()">Login to SMail!</button>
-    </form>
-    </div>
-    <br />
-    <p style="font-weight: bold;">Or</p>
-    <div id="create">
-      Create a new account:
-    <form method="post" id="keyform" action="#" onSubmit="return false;">
-      Name: <input type="text" name="name" value="" id="createname"/><br />
-      Email Address: <input type="text" name="email" value="" id="createemail" onchange="validateSmailEmail()"/>@<?php print SMAIL_DOMAIN;?> <div id="createemailcheck"></div><br />
-      Password: <input type="password" name="password" id="createpassword" /><br />
-      <button onClick="createUser()">Make new SMail account!</button>
-    </form>
-    </div>
-    
+    <div id="login_container">
+      <h1>sMail</h1>
+      <div id="login">
+        <h3>Sign In</h3>
+        <form method="post" action="#" onSubmit="return false;">
+          
+          <div class="field_label">Username</div>
+          <input type="text" name="email" value="" id="loginemail" /><br />
+        
+          <div class="field_label">Password</div>
+          <input type="password" name="password" id="loginpassword" /><br />
+        
+          <div class="field_label">
+          
+            <button onClick="login()">Login to SMail!</button>
+          
+            <div style="float:right">
+              <a href="javascript:createAccount('login', 'create');">Create an account</a>
+            </div>
+          
+          </div>
+        </form>
+      </div>
+      <div id="create" style="display:none">
+        <h3>Create an account</h3>
+        <form method="post" action="#" onSubmit="return false;">
+          
+          <div class="field_label">Name</div>
+          <input type="text" name="name" value="" id="createname"/><br />
+      
+          <div class="field_label">Username</div>
+          <input type="text" name="email" value="" id="createemail" onchange="validateSmailEmail()"/>
+          
+          @<?php print SMAIL_DOMAIN;?> 
+          <div id="createemailcheck"></div><br />
+      
+          <div class="field_label">Password</div>
+          <input type="password" name="password" id="createpassword" /><br />
+          
+          <button onClick="createUser()">Make new SMail account!</button>
+
+        </form>
+      </div>
+    </div>    
   </body>
   
 </html>
