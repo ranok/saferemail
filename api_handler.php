@@ -78,6 +78,9 @@ function get_message($id)
 
 function send_message($email, $subject, $message, $post)
 {
+  if (!isset($_SESSION['user']))
+    return;
+  $user = unserialize($_SESSION['user']);
   if ($post)
     {
       $exploded_email = explode('@', $email);
@@ -103,9 +106,18 @@ function send_message($email, $subject, $message, $post)
 		{
 		  if (preg_match('/^v=shmp1 http/', $record))
 		    {
-		      // FIXME Fix this to POST to this address
-		      // Use that address to get public key
-		      print file_get_contents(preg_replace('/^v=shmk1 /', '', $record).'?email='.$email);
+		      $fields = array(
+		      	      'subject' => urlencode($subject),
+			      'message' => urlencode($message),
+			      'to' => urlencode($email),
+			      'from' => urlencode($user->email)
+			      );
+		      $ch = curl_init();
+		      curl_setopt($ch, CURLOPT_URL, preg_replace('/^v=shmp1 /', '', $record));
+		      curl_setopt($ch, CURLOPT_POST, count($fields));
+		      curl_setopt($ch, CURLOPT_POSTFIELDS, $filds_string);
+		      curl_exec($ch);
+		      curl_close($ch);
 		    }
 		}
 	    }
