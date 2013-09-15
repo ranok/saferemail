@@ -11,6 +11,7 @@ if (isset($_SESSION['user']))
   <head>
     <script type="text/javascript">
       var emaildomain = "<?php print SMAIL_DOMAIN; ?>";
+      var keysize = <?php print SMAIL_KEYSIZE; ?>;
     </script>
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="openpgpjs/resources/openpgp.js"></script>
@@ -33,7 +34,7 @@ if (isset($_SESSION['user']))
         <h3>Sign In</h3>
         <form method="post" action="#" onSubmit="return false;">
           
-          <div class="field_label">Username</div>
+          <div class="field_label">Username/Email</div>
           <input type="text" name="email" value="" id="loginemail" /><br />
         
           <div class="field_label">Password</div>

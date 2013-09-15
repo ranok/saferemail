@@ -74,6 +74,7 @@ function symmetricEncrypt(key, message)
 function determineEncStatus()
 {
     var email = document.getElementById("toemail").value;
+    document.getElementById("emailstatus").textContent = "";
     $.ajax({
 	    url: "api_handler.php",
 		data: {method : "get_public_key", email : email}
@@ -150,6 +151,8 @@ function validateSmailEmail()
 	}).done(function (data) {
 		if (data == 'false')
 		    document.getElementById("createemailcheck").textContent = email + " is available!";
+	        else
+		    document.getElementById("createemailcheck").textContent = "Sorry, " + email + " is not available";
 	    });
     
 }
@@ -158,7 +161,8 @@ function createUser()
 {
     var email = $("#createemail").val() + '@' + emaildomain;
     var name = $("#createname").val();
-    if (generateKey(name, email, 1024))
+    var bits = (keysize == null) ? 1024 : keysize;
+    if (generateKey(name, email, bits))
 	{
 	    var pubkey = openpgp.keyring.getPublicKeyForAddress(email)[0].armored;
 	    var privkey = openpgp.keyring.getPrivateKeyForAddress(email)[0].armored;
@@ -195,6 +199,8 @@ function postToUrl(path, params, method) {
 function login()
 {
     var email = document.getElementById("loginemail").value;
+    if (email.indexOf("@") == -1)
+	email = email + '@' + emaildomain;
     $.ajax({
 	    url: "api_handler.php",
 		data: {method : "get_enc_privkey", email : email}
