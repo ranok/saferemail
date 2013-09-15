@@ -44,7 +44,7 @@ $messages = getMessages($user->id, 15);
              {
           ?>
 
-          <li onclick="showMessage(<?php print $message['id']; print ',\''; print htmlentities($message['from']); print '\',\''; print $message['subject']; print '\',\''; print $message['timestamp']; print '\''; ?>)">
+          <li onclick="showMessage(<?php print $message['id']; ?>)">
             <span class="mailbox_controls">
               <input type="checkbox" />
             </span>

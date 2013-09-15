@@ -84,11 +84,12 @@ function get_message($id)
   $db = new DB();
   $user = unserialize($_SESSION['user']);
   $id = $db->sanitize($id);
-  $db->query("SELECT (`message`) FROM `message` WHERE `id` = '$id' AND `user` = '{$user->id}' LIMIT 1");
+  $db->query("SELECT `message`, `from`, `subject`, `timestamp` FROM `message` WHERE `id` = '$id' AND `user` = '{$user->id}' LIMIT 1");
   if ($db->num_rows() == 1)
     {
       $row = $db->get_row();
-      print $row['message'];
+      // FIXME: Nasty hack which is probably slow
+      print json_encode(array_flip(array_filter(array_flip($row), 'strip_numeric')));
     }
 }
 
@@ -186,6 +187,11 @@ function get_public_key($email)
 	    }
 	}
     }
+}
+
+function strip_numeric($var)
+{
+  return !is_numeric($var);
 }
 
 ?>
