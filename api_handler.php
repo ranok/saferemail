@@ -90,12 +90,13 @@ function send_message($email, $subject, $message, $post)
       if ($domain == SMAIL_DOMAIN)
 	{
 	  $fu = unserialize($_SESSION['user']);
+	  $fromemail = $fu->name.' <'.$fu->email.'>';
 	  $u = new User();
 	  $u->loadByEmail($email);
 	  $db = new DB();
 	  $message = $db->sanitize($message);
 	  $subject = $db->sanitize($subject);
-	  $db->query("INSERT INTO `message` (`user`, `from`, `subject`, `message`) VALUES ('{$u->id}', '{$fu->email}', '$subject', '$message');");
+	  $db->query("INSERT INTO `message` (`user`, `from`, `subject`, `message`) VALUES ('{$u->id}', '$fromemail', '$subject', '$message');");
 	}
       else
 	{
@@ -112,7 +113,7 @@ function send_message($email, $subject, $message, $post)
 		      	      'subject' => urlencode($subject),
 			      'message' => urlencode($message),
 			      'to' => urlencode($email),
-			      'from' => urlencode($user->email)
+			      'from' => urlencode($user->name.' <'.$user->email.'>')
 			      );
 		      foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
 		      rtrim($fields_string, '&');

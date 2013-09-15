@@ -44,13 +44,13 @@ $messages = getMessages($user->id, 15);
              {
           ?>
 
-          <li onclick="showMessage(<?php print $message['id']; print ',\''; print $message['from']; print '\',\''; print $message['subject']; print '\',\''; print $message['timestamp']; print '\''; ?>)">
+          <li onclick="showMessage(<?php print $message['id']; print ',\''; print htmlentities($message['from']); print '\',\''; print $message['subject']; print '\',\''; print $message['timestamp']; print '\''; ?>)">
             <span class="mailbox_controls">
               <input type="checkbox" />
             </span>
 
             <span class="mailbox_from">
-              <?php print $message['from']; ?>
+              <?php print preg_replace('/ <.*>/', '', $message['from']); ?>
             </span>
             
             <span class="mailbox_subject">
