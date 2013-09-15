@@ -92,15 +92,19 @@ function determineEncStatus()
     
 }
 
-function showMessage(id)
+function showMessage(id, from, subject, date)
 {
     $.ajax({
 	    url: "api_handler.php",
 		data: {method: "get_message", id: id}
-	}).done(function (data) {
-		
-		document.getElementById("messagebox").textContent = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, data);
-	    });
+	}).done(function (data) {	
+		$(".mailbox").hide();
+		document.getElementById("messagebox").style.display = "block";
+		document.getElementById("message_subject").textContent = subject;
+		document.getElementById("message_from").textContent = from;
+		document.getElementById("message_date").textContent = date;
+		document.getElementById("message_content").textContent = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, data);
+	});
 }
 
 function sendMessage()
@@ -126,7 +130,9 @@ function sendMessage()
 		data: {email: email, subject: subject, message: encmessage, post: post}
 	}).done(function (data) {
 		document.getElementById("composeform").reset();
-	    });
+		document.getElementById("composeform").style.display = 'none';
+		document.getElementById("send_complete").style.display = 'block';
+	});
 }
 
 function logOff()

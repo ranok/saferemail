@@ -19,4 +19,7 @@ if (!isset($_SESSION['user']))
         <br />
         <button onClick="sendMessage()">Send</button>
     </form>
+    <div id="send_complete" style="display:none; padding: 10px;">
+        Message sent!
+    </div>
 </div>

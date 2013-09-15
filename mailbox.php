@@ -44,7 +44,7 @@ $messages = getMessages($user->id, 15);
              {
           ?>
 
-          <li onclick="showMessage(<?php print $message['id']; ?>)">
+          <li onclick="showMessage(<?php print $message['id']; print ',\''; print $message['from']; print '\',\''; print $message['subject']; print '\',\''; print $message['timestamp']; print '\''; ?>)">
             <span class="mailbox_controls">
               <input type="checkbox" />
             </span>
@@ -81,7 +81,10 @@ $messages = getMessages($user->id, 15);
           <?php
         }
         ?>
-        
-        <div id="messagebox">
 
-      </div>
+        <div id="messagebox">
+          	<div id="message_subject">Subject</div>
+        	<div id="message_date">Date</div>
+        	<div id="message_from">mkb@r4n0k.com</div>
+        	<div id="message_content"></div>
+      	</div>

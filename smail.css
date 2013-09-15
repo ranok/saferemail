@@ -153,7 +153,6 @@ ul.mailbox li {
   padding: 5px 4px;
   background: rgba(150,150,150,0.2);
   cursor: pointer;
-#border-top: 1px solid #D5d5d5;
   font-size: 0.9em;
 }
 
@@ -192,6 +191,33 @@ ul.mailbox li:hover {
   text-align: right;
 }
 
+#messagebox {
+  display: none;
+  margin: 1px 0;
+  border-top: solid 1px rgba(100,50,0,0.8);
+}
+
+#message_subject {
+  float: left;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+}
+
+#message_from {
+  clear: both;
+  color: #555;
+}
+
+#message_date {
+  color: #555;
+  float: left;
+  margin: 0px 0 0 20px;
+}
+
+#message_content {
+  clear:both;
+  padding: 20px 0;
+}
 
 #footer {
         clear: both;
