@@ -20,6 +20,9 @@ switch ($_GET['method'])
     unset($_SESSION['user']);
     break;
     // Fetch a single message
+  case "delete_message":
+    delete_message($_GET['id']);
+    break;
   case "get_message":
     get_message($_GET['id']);
     break;
@@ -64,11 +67,24 @@ function gen_nonce($email)
   print OpenPGP::enarmor($enc->to_bytes(), "PGP MESSAGE");
 }
 
+function delete_message($id)
+{
+  if (!isset($_SESSION['user']))
+    return;
+  $db = new DB();
+  $user = unserialize($_SESSION['user']);
+  $id = $db->sanitize($id);
+  $db->query("DELETE FROM `message` WHERE `id` = '$id' AND `user` = '{$user->id}' LIMIT 1");
+}
+
 function get_message($id)
 {
+  if (!isset($_SESSION['user']))
+    return;
   $db = new DB();
+  $user = unserialize($_SESSION['user']);
   $id = $db->sanitize($id);
-  $db->query("SELECT (`message`) FROM `message` WHERE `id` = '$id' LIMIT 1");
+  $db->query("SELECT (`message`) FROM `message` WHERE `id` = '$id' AND `user` = '{$user->id}' LIMIT 1");
   if ($db->num_rows() == 1)
     {
       $row = $db->get_row();
