@@ -250,6 +250,36 @@ function login()
 	    });    
 }
 
+function push_state(state, title, url) {
+	if (url != window.location.hash)
+		history.pushState(state, title, url);
+}
+
+function goto_compose()
+{
+	var state = {view: "#compose"};
+	$("#content").load("compose.php");
+	push_state(state, "sMail", '#compose');
+}
+
+function goto_messages(dir) 
+{
+	var state = {view: "#inbox"};
+	$("#content").load("mailbox.php");
+	push_state(state, "sMail", '#inbox');
+}
+
+function goto_message(id)
+{
+	if (isInt(id) == false) {
+		return;
+	}
+	var state = {view: "#inbox/" + id};
+	$("#content").load("mailbox.php");
+	push_state(state, "sMail", "#inbox/" + id);
+	showMessage(id, null, null, null);
+}
+
 function loadFileDiv(id, file) {
 	$(id).load(file);
 }
@@ -270,3 +300,7 @@ function showDiv(devid) {
 		document.getElementById(devid).style.display = 'block'; 
 	} 
 } 
+
+function isInt(n) {
+   return typeof n === 'number' && n % 1 == 0;
+}

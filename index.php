@@ -27,38 +27,89 @@
       $(".enc").each(function(index) {
         $(this).text = rsaDecrypt(openpgp.keyring.exportPrivateKey, $(this).text());
       });
+
+      // If an invalid URL is provided load the inbox
+      if (load_from_url_hash(0) == 1) {
+        history.replaceState({view: "inbox"}, document.title, "#inbox");
+        $("#content").load("mailbox.php");
+      }
     }
+
+    // This gets called if a user requests a url directly 
+    // (as opposed to clicking ajax links)
+    // or if a user uses the forward and back buttons
+    function load_from_url_hash(pop)
+    {
+      var hash = window.location.hash;
+      var state = hash.split('/');
+      var url = state[0];
+
+      switch (state[0]) {
+        case "#inbox":
+          $("#content").load("mailbox.php");
+          if (state[1] != null) {
+            showMessage(state[1], null, null, null);
+            url += '/' . state[1];
+          }
+          break;
+        case "#compose":
+          $("#content").load("compose.php");
+          break;
+        default:
+          return 1;
+          break;
+      }
+      // Requesting a url directly for the first time
+      if (!history.state) {
+        history.replaceState({view: url}, "sMail", url);
+      }
+      // Requesting a url directly after having established state
+      else if (pop == 0) {
+        // Don't save state if they are refreshing the page
+        if (history.state.view != url)
+          history.pushState({view: url}, "sMail", url);
+      }
+      return 0;
+    }
+
+    window.onpopstate = (function(event) {
+      load_from_url_hash(1);
+    });
+
   </script>
   <link rel="stylesheet" type="text/css" href="smail.css" media="screen" />
   <title>SecureMail</title>
 </head>
 
 <body onload="smailOnLoad()">
-  <!-- body overlay for fancy transparent backgrounds and such -->
+
   <div id="body_overlay">
     <!-- Header/Logo -->
     <div id="header">
       <div id="logo">sMail</div>
-      <div class="top_nav" onClick="loadFileDiv('#content', 'compose.php')">Compose</div>
-      <div class="top_nav" onClick="logOff()">Log Off</div>
-      <div style="clear:both;"><br/></div>
+      <div class="button" id="compose_button" onClick="goto_compose()">Compose</div>
+      <div class="button" id="logoff_button" onClick="logOff()">Log Off</div>
+      <div style="clear:both;"></div>
     </div>
 
     <div id="container">
 
       <div id="sidebar">
         <ul>
-          <li onClick="loadFileDiv('#content', 'mailbox.php')">
+          <li onClick="goto_messages('#inbox')">
             Inbox
           </li>
+          <li>
+            Sent Mail
+          </li>
         </ul>
-      </div>
+      </div> <!-- /sidebar -->
 
       <div id="content">
-        <?php require_once("mailbox.php"); ?>
+        <!-- Content loaded via javascript in smailOnLoad -->
       </div>
 
-    </div> <!-- body_overlay -->
+    </div> <!-- /body_overlay -->
 
     <div id="footer"></div>
     <div style="clear:both;"><br/></div>

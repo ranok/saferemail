@@ -32,59 +32,59 @@ $user = unserialize($_SESSION['user']);
 $messages = getMessages($user->id, 15);
 ?>
 
-        <?php
-          if (count($messages))
-          {
-        ?>
-        <ul class="mailbox">
+<?php
+if (count($messages))
+{
+  ?>
+  <ul class="mailbox">
 
-          <?php
+    <?php
              // Show inbox
-             foreach ($messages as $message)
-             {
-          ?>
+    foreach ($messages as $message)
+    {
+      ?>
 
-          <li onclick="showMessage(<?php print $message['id']; ?>)">
-            <span class="mailbox_controls">
-              <input type="checkbox" />
-            </span>
+      <li>
+        <span class="mailbox_controls">
+          <input type="checkbox" />
+        </span>
 
-            <span class="mailbox_from">
-              <?php print preg_replace('/ <.*>/', '', $message['from']); ?>
-            </span>
-            
-            <span class="mailbox_subject">
-              <?php print $message['subject']; ?>
-            </span>
-            
-            <span class="mailbox_preview">
-              - this is a message preview
-            </span>
-            
-            <span class="mailbox_date">
-              <?php print $message['timestamp']; ?>
-            </span>
-          
-          </li>
+        <span class="mailbox_from" onclick="goto_message(<?php print $message['id']; ?>)">
+          <?php print preg_replace('/ <.*>/', '', $message['from']); ?>
+        </span>
 
-          <?php
-            }
-          ?>
+        <span class="mailbox_subject">
+          <?php print $message['subject']; ?>
+        </span>
 
-        </ul>
-        <?php
-        }
-        else
-        {
-          ?>
-          <p>No messages to display!</p>
-          <?php
-        }
-        ?>
+        <span class="mailbox_preview">
+          - this is a message preview
+        </span>
 
-        <div id="messagebox">
-          	<div id="message_subject">Subject</div>
-        	<div id="message_date">Date</div>
-        	<div id="message_from">mkb@r4n0k.com</div>
-        	<div id="message_content"></div>
-      	</div>
+        <span class="mailbox_date">
+          <?php print $message['timestamp']; ?>
+        </span>
+
+      </li>
+
+      <?php
+    }
+    ?>
+
+  </ul>
+  <?php
+}
+else
+{
+  ?>
+  <p>No messages to display!</p>
+  <?php
+}
+?>
+
+<div id="messagebox">
+ <div id="message_subject">Subject</div>
+ <div id="message_date">Date</div>
+ <div id="message_from">mkb@r4n0k.com</div>
+ <div id="message_content"></div>
+</div>

@@ -26,13 +26,13 @@ body {
   float:left;
   width:220px;
   margin: 1px 20px 10px 5px;
-  border-top: solid 1px rgba(100,50,0,0.8);
+  font-size: 14px;
 }
 
 #sidebar ul {
 	list-style-type: none;
 	margin: 0px;
-	padding: 10px 0px;
+	padding: 0px 0px;
 }
 
 #sidebar ul li {
@@ -88,7 +88,10 @@ body {
 
 #header {
   border-top: solid 5px rgba(43,44,44,1);
-  padding: 5px 0 0 0;
+  #border-bottom: solid 1px rgba(200,200,200,1);
+  padding: 5px 30px 15px 0;
+  margin: 0 0px 5px 0;
+  #background: rgba(230,225,220,0.2);
 }
 
 #logo {
@@ -111,25 +114,57 @@ header h1 {
   padding: 0;
 }
 
-.top_nav {
-  float:left;
-  margin: 15px 10px 0px 4px;
+.button {
+  margin: 0;
   padding: 4px 12px;
   background: rgba(0,0,0, 0.5);
   background: linear-gradient(to bottom, rgba(43,44,44,0.1) 0%,  rgba(43,44,44,0) 100%);
   color: #0f4d69;
   border: 1px solid rgba(0,0,0,0.3);
-  border-radius: 1px;
+  border-radius: 2px;
   cursor: pointer;
   font-family: helvetica;
   font-size: 13px;
   font-weight: bold;
+  text-align: center;
 }
 
-.top_nav:hover {
+.button:hover {
   background: rgba(255,255,255,1);
   border: 1px solid rgba(0,0,0,0.5);
 # background: linear-gradient(to bottom, rgba(91,151,177,1) 0%, #FFF 100%);
+}
+
+#header .button {
+  float: left;
+  margin: 20px 10px 0 0;
+}
+
+.button#logoff_button {
+  float: right;
+  margin: 20px 0 0 0;
+}
+
+.button#compose_button {
+  
+}
+
+#notification {
+  width: auto;
+  text-align: center;
+  display: inline-block;
+}
+
+#notification .button {
+  margin: 0;
+  float: left;
+  display: block;
+  color: black;
+  font-size: 14px;
+  font-weight: lighter;
+  border: none;
+  padding: 5px 12px;
+  background: rgba(255,235,0,0.5);
 }
 
 ul {

@@ -2,7 +2,7 @@
 require('lib/include.php');
 if (isset($_SESSION['user']))
   {
-    header("Location: index.php");
+    header("Location: ./");
     exit();
   }
 ?>
