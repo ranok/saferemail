@@ -53,11 +53,11 @@ if (count($messages))
           <?php print preg_replace('/ <.*>/', '', $message['from']); ?>
         </span>
 
-        <span class="mailbox_subject">
+        <span class="mailbox_subject" onclick="goto_message(<?php print $message['id']; ?>)">
           <?php print $message['subject']; ?>
         </span>
 
-        <span class="mailbox_preview">
+        <span class="mailbox_preview" onclick="goto_message(<?php print $message['id']; ?>)">
           - this is a message preview
         </span>
 
