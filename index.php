@@ -46,10 +46,12 @@
 
       switch (state[0]) {
         case "#inbox":
-          $("#content").load("mailbox.php");
           if (state[1] != null) {
-            showMessage(state[1], null, null, null);
+            $("#content").load("message.php");
+            showMessage(state[1]);
             url += '/' . state[1];
+          } else {
+            $("#content").load("mailbox.php");
           }
           break;
         case "#compose":

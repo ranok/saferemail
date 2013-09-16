@@ -275,9 +275,9 @@ function goto_message(id)
 		return;
 	}
 	var state = {view: "#inbox/" + id};
-	$("#content").load("mailbox.php");
+	$("#content").load("message.php");
 	push_state(state, "sMail", "#inbox/" + id);
-	showMessage(id, null, null, null);
+	showMessage(id);
 }
 
 function loadFileDiv(id, file) {

@@ -81,10 +81,3 @@ else
   <?php
 }
 ?>
-
-<div id="messagebox">
- <div id="message_subject">Subject</div>
- <div id="message_date">Date</div>
- <div id="message_from">mkb@r4n0k.com</div>
- <div id="message_content"></div>
-</div>
