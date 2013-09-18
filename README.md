@@ -11,13 +11,13 @@ ideals in mind:
 * Open Source - Those motivated to do so should always be able to see and understand the code running on their systems
 * Secure - The emails are all encrypted and unreadable on the server, so even if your database is compromised, the attacker cannot recover your email
 * Easy - While secure, encrypted email is currently very possible with a little effort and some technical skills; Safer Email aims to lessen the learning curve, both for end-users and people who want to deploy Safer Email on their servers
-* Transparent - Safer Email must work across domains and protocols to ensure a transparent, autmoatic encryption experience (you might not even know you're using encryption!)
+* Transparent - Safer Email must work across domains and protocols to ensure a transparent, automatic encryption experience (you might not even know you're using encryption!)
 
 Design
 -------
 
 Safer Email is designed to require only a domain name and a LAMP server and provide a simple installation and user experience. 
-When installing, the server adminstrator must add 2 DNS TXT records to his/her domain name to allow other Safer Mail servers to automatically discover public keys from an authorative source, and directly HTTP POST messages to the remote system. 
+When installing, the server administrator must add 2 DNS TXT records to his/her domain name to allow other Safer Mail servers to automatically discover public keys from an authoritative source, and directly HTTP POST messages to the remote system.
 
 To receive mail over SMTP, there will be a number of proxy servers which you can add as your MX record, they will accept incoming SMTP messages, and HTTP POST them to your webmail service (alternatively you can host your own SMTP relay).
 This allows a much lower barrier to entry for individuals or groups who want to take their email and security into their own hands, only a web hosting service (e.g. DreamHost) is required.
