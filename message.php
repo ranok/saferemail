@@ -10,7 +10,8 @@ if (!isset($_SESSION['user']))
 
 <div id="messagebox">
  <div id="message_subject"></div>
- <div id="message_date"></div>
  <div id="message_from"></div>
+  <div id="message_date"></div>
  <div id="message_content">Nothing to display.</div>
 </div>
+<input type="checkbox" class="mail_selector" id="single_mail_selector" checked/>

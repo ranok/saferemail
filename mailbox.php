@@ -44,9 +44,10 @@ if (count($messages))
     {
       ?>
 
-      <li>
+      <li draggable="true" class="none" id="msgid_<?php print $message['id']; ?>">
         <span class="mailbox_controls">
-          <input type="checkbox" />
+          <input type="checkbox" class="mail_selector" value="<?php print $message['id']; ?>" onclick="toggle_msg_highlight('msgid_<?php print $message['id']; ?>')" />
+          <div class="checkbox"></div>
         </span>
 
         <span class="mailbox_from" onclick="goto_message(<?php print $message['id']; ?>)">
@@ -58,7 +59,7 @@ if (count($messages))
         </span>
 
         <span class="mailbox_preview" onclick="goto_message(<?php print $message['id']; ?>)">
-          - this is a message preview
+          - Encrypted Message
         </span>
 
         <span class="mailbox_date">

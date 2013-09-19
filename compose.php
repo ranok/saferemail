@@ -7,11 +7,10 @@ if (!isset($_SESSION['user']))
   exit();
 }
 ?>
+<div id="emailstatus"></div><div style="clear:both"></div>
 <div id="compose">
     <form method="post" id="composeform" action="javascript: return(false);">
     	<input type="text" id="toemail" name="toemail" value="To" onchange="determineEncStatus();" onclick="if(this.value == 'To') this.value = '';" />
-    	
-    	<div id="emailstatus"></div>
     	
     	<input type="text" name="subject" id="subject" value="Subject" onclick="if(this.value == 'Subject') this.value = '';"/>
     	<br />

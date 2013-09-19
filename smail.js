@@ -83,9 +83,15 @@ function determineEncStatus()
 		    {
 			toPubKey = openpgp.read_publicKey(data);
 			document.getElementById("emailstatus").textContent = "Public key found, message will be secured";
+			$('#emailstatus').removeClass('notencrypted');
+		    $('#emailstatus').removeClass('encrypted');
+			$('#emailstatus').addClass('encrypted');
 		    }
 		else
 		    {
+			$('#emailstatus').removeClass('encrypted');
+			$('#emailstatus').removeClass('notencrypted');
+			$('#emailstatus').addClass('notencrypted');
 			document.getElementById("emailstatus").textContent = "No public key found, message will NOT be secured";
 		    }
 	    });
@@ -100,12 +106,21 @@ function showMessage(id)
 	}).done(function (data) {	
 		$(".mailbox").hide();
 		var messagejson = JSON.parse(data);
-		document.getElementById("messagebox").style.display = "block";
+
+		$('#single_mail_selector').each(function(){
+     		$(this).val(id);
+ 		});
+
 		document.getElementById("message_subject").textContent = messagejson.subject;
 		document.getElementById("message_from").textContent = messagejson.from;
 		document.getElementById("message_date").textContent = messagejson.timestamp;
 		document.getElementById("message_content").textContent = rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, messagejson.message);
+		document.getElementById("messagebox").style.display = "block";
 	});
+}
+
+function getPreview(message) {
+	return rsaDecrypt(openpgp.keyring.exportPrivateKey(0).armored, message);
 }
 
 function sendMessage()
@@ -278,6 +293,24 @@ function goto_message(id)
 	$("#content").load("message.php");
 	push_state(state, "sMail", "#inbox/" + id);
 	showMessage(id);
+}
+
+
+function toggle_msg_highlight(id) 
+{
+	$("#"+id).toggleClass("msg_highlight");
+}
+
+function delete_selected_mail() 
+{
+	$(".mail_selector:checked").each(function() {
+    	$.ajax({
+	    	url: "api_handler.php",
+			data: {method: "delete_message", id: $(this).val()}
+		}).done(function (data) {	
+			goto_messages('#inbox');
+		});
+	});
 }
 
 function loadFileDiv(id, file) {

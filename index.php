@@ -90,6 +90,12 @@
     <div id="header">
       <div id="logo">sMail</div>
       <div class="button" id="compose_button" onClick="goto_compose()">Compose</div>
+      <div class="button" onClick="load_from_url_hash()">Refresh</div>
+      <!-- <div class="button drop_button" onClick="">
+          Select
+          <image src="images/droparrow.png" />
+      </div> -->
+      <div class="button" onClick="delete_selected_mail()">Delete</div>
       <div class="button" id="logoff_button" onClick="logOff()">Log Off</div>
       <div style="clear:both;"></div>
     </div>
@@ -97,6 +103,7 @@
     <div id="container">
 
       <div id="sidebar">
+        
         <ul>
           <li onClick="goto_messages('#inbox')">
             Inbox
