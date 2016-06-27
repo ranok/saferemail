@@ -88,7 +88,7 @@
   <div id="body_overlay">
     <!-- Header/Logo -->
     <div id="header">
-      <div id="logo">sMail</div>
+      <div id="logo"><?php print SMAIL_NAME; ?></div>
       <div class="button" id="compose_button" onClick="goto_compose()">Compose</div>
       <div class="button" onClick="load_from_url_hash()">Refresh</div>
       <!-- <div class="button drop_button" onClick="">

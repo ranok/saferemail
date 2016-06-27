@@ -1,5 +1,6 @@
 <?php
 define("SMAIL_DOMAIN", "DOMAIN.FQDN");
+define("SMAIL_NAME", "sMail");
 define("SMAIL_SALT", "RANDOMSTRINGHERE");
 define("SMAIL_KEYSIZE", 1024);
 ?>
