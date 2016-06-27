@@ -19,17 +19,10 @@ $user = unserialize($_SESSION['user']);
 */
  function getMessages($userid, $num)
  {
-  $db = new DB();
-  $db->query("SELECT * FROM `message` WHERE `user` = '$userid' ORDER BY `timestamp` DESC LIMIT $num;");
-  $out = array();
-  for ($i = 0; $i < $db->num_rows(); $i++)
-  {
-    $out[] = $db->get_row();
-  }
-  return $out;
-}
+  return MessageQuery::create()->filterByUserId($userid)->limit($num)->find();
+ }
 
-$messages = getMessages($user->id, 15);
+$messages = getMessages($user->getId(), 15);
 ?>
 
 <?php
@@ -44,26 +37,26 @@ if (count($messages))
     {
       ?>
 
-      <li draggable="true" class="none" id="msgid_<?php print $message['id']; ?>">
+      <li draggable="true" class="none" id="msgid_<?php print $message->getId(); ?>">
         <span class="mailbox_controls">
-          <input type="checkbox" class="mail_selector" value="<?php print $message['id']; ?>" onclick="toggle_msg_highlight('msgid_<?php print $message['id']; ?>')" />
+          <input type="checkbox" class="mail_selector" value="<?php print $message->getId(); ?>" onclick="toggle_msg_highlight('msgid_<?php print $message->getId(); ?>')" />
           <div class="checkbox"></div>
         </span>
 
-        <span class="mailbox_from" onclick="goto_message(<?php print $message['id']; ?>)">
-          <?php print preg_replace('/ <.*>/', '', $message['from']); ?>
+        <span class="mailbox_from" onclick="goto_message(<?php print $message->getId(); ?>)">
+          <?php print preg_replace('/ <.*>/', '', $message->getFrom()); ?>
         </span>
 
-        <span class="mailbox_subject" onclick="goto_message(<?php print $message['id']; ?>)">
-          <?php print $message['subject']; ?>
+        <span class="mailbox_subject" onclick="goto_message(<?php print $message->getId(); ?>)">
+          <?php print $message->getSubject(); ?>
         </span>
 
-        <span class="mailbox_preview" onclick="goto_message(<?php print $message['id']; ?>)">
+        <span class="mailbox_preview" onclick="goto_message(<?php print $message->getId(); ?>)">
           - Encrypted Message
         </span>
 
         <span class="mailbox_date">
-          <?php print $message['timestamp']; ?>
+          <?php print $message->getTimestamp(); ?>
         </span>
 
       </li>

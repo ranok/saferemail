@@ -25,17 +25,17 @@ function create_user()
 {
   $u = new User();
   // Ensure there is not an existing user with the same email address
-  if($u->loadByEmail($_POST['email']))
+  if(UserQuery::create()->findOneByEmail($_POST['email']) != NULL)
     return;
-  $u->pubkey = $_POST['pubkey'];
-  $u->name = $_POST['name'];
-  $u->email = $_POST['email'];
-  $u->encprivkey = $_POST['encprivkey'];
+  $u->setPubkey($_POST['pubkey']);
+  $u->setName($_POST['name']);
+  $u->setEmail($_POST['email']);
+  $u->setEncprivkey($_POST['encprivkey']);
 
-  $u->saveNew();
+  $u->save();
 
   // Reload to get user ID set
-  $u->loadByEmail($_POST['email']);
+  $u = UserQuery::create()->findOneByEmail($_POST['email']);
   $_SESSION['user'] = serialize($u);
 }
 
@@ -49,8 +49,7 @@ function login()
   if ($_POST['nonce'] == $_SESSION['nonce'])
     {
       unset($_SESSION['nonce']);
-      $u = new User();
-      $u->loadByEmail($_SESSION['loginemail']);
+      $u = UserQuery::create()->findOneByEmail($_SESSION['loginemail']);
       $_SESSION['user'] = serialize($u);
       unset($_SESSION['loginemail']);
     }

@@ -5,6 +5,13 @@ require_once('openpgpphp/lib/openpgp.php');
 require_once('openpgpphp/lib/openpgp_crypt_rsa.php');
 require_once('openpgpphp/lib/openpgp_crypt_aes_tripledes.php');
 
+if (!isset($_GET['method']))
+{
+
+  exit();
+}
+ 
+
 switch ($_GET['method'])
   {
     // Request a public key for some email address which may be using Safer Email
@@ -44,21 +51,19 @@ switch ($_GET['method'])
 
 function get_enc_privkey($email)
 {
-  $u = new User();
-  $u->loadByEmail($email);
-  if ($u->id == -1)
+  $u = UserQuery::create()->findOneByEmail($email);
+  if ($u === NULL)
     return;
-  print $u->encprivkey;
+  print $u->getEncprivkey();
 }
 
 function gen_nonce($email)
 {  
-  $u = new User();
-  $u->loadByEmail($email);
-  if ($u->id == -1)
+  $u = UserQuery::create()->findOneByEmail($email);
+  if ($u === NULL)
     return;
   
-  $key = OpenPGP_Message::parse(OpenPGP::unarmor($u->pubkey));
+  $key = OpenPGP_Message::parse(OpenPGP::unarmor($u->getPubkey()));
   $rn = SMAIL_SALT.rand();
   $_SESSION['loginemail'] = $email;
   $_SESSION['nonce'] = $rn;
@@ -71,25 +76,22 @@ function delete_message($id)
 {
   if (!isset($_SESSION['user']))
     return;
-  $db = new DB();
   $user = unserialize($_SESSION['user']);
-  $id = $db->sanitize($id);
-  $db->query("DELETE FROM `message` WHERE `id` = '$id' AND `user` = '{$user->id}' LIMIT 1");
+  $msg = MessageQuery::create()->filterByUserId($user->getId())->findPk($id);
+  if ($msg != NULL)
+    $msg->delete();
 }
 
 function get_message($id)
 {
   if (!isset($_SESSION['user']))
     return;
-  $db = new DB();
   $user = unserialize($_SESSION['user']);
-  $id = $db->sanitize($id);
-  $db->query("SELECT `message`, `from`, `subject`, `timestamp` FROM `message` WHERE `id` = '$id' AND `user` = '{$user->id}' LIMIT 1");
-  if ($db->num_rows() == 1)
+  $msg = MessageQuery::create()->filterByUserId($user->getId())->findPk($id);
+
+  if ($msg != NULL)
     {
-      $row = $db->get_row();
-      // FIXME: Nasty hack which is probably slow
-      print json_encode(array_flip(array_filter(array_flip($row), 'strip_numeric')));
+      print json_encode(Array("message" => $msg->getMessage(), "from" => $msg->getFrom(), "subject" => $msg->getSubject(), "timestamp" => $msg->getTimeStamp()));
     }
 }
 
@@ -107,13 +109,16 @@ function send_message($email, $subject, $message, $post)
       if ($domain == SMAIL_DOMAIN)
 	{
 	  $fu = unserialize($_SESSION['user']);
-	  $fromemail = $fu->name.' <'.$fu->email.'>';
-	  $u = new User();
-	  $u->loadByEmail($email);
-	  $db = new DB();
-	  $message = $db->sanitize($message);
-	  $subject = $db->sanitize($subject);
-	  $db->query("INSERT INTO `message` (`user`, `from`, `subject`, `message`) VALUES ('{$u->id}', '$fromemail', '$subject', '$message');");
+	  $fromemail = $fu->getName().' <'.$fu->getEmail().'>';
+	  $u = UserQuery::create()->findOneByEmail($email);  
+	  
+	  $msg = new Message();
+	  $msg->setMessage($message);
+    	  $msg->setFrom($fromemail);
+    	  $msg->setSubject($subject);
+	  $msg->setUserId($u->getId());
+
+    	  $msg->save();
 	}
       else
 	{
@@ -147,14 +152,14 @@ function send_message($email, $subject, $message, $post)
     }
   else
     {
-      mail($email, $subject, $message, 'From: '.$user->name.' <'.$user->email.'>');
+      mail($email, $subject, $message, 'From: '.$user->getName().' <'.$user->getEmail().'>');
     }
 }
 
 function user_exists($email)
 {
-  $u = new User();
-  if($u->loadByEmail($email))
+  $u = UserQuery::create()->findOneByEmail($email);
+  if($u !== NULL)
     print "true";
   else
     print "false";
@@ -168,9 +173,9 @@ function get_public_key($email)
 
   if ($domain == SMAIL_DOMAIN)
     {
-      $u = new User();
-      $u->loadByEmail($email);
-      print $u->pubkey;
+      $u = UserQuery::create()->findOneByEmail($email);	
+      if ($u != NULL)
+        print $u->getPubkey();
     }
   else
     {

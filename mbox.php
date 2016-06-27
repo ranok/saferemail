@@ -6,16 +6,15 @@ $username = $exploded_email[0];
 
 if ($domain == SMAIL_DOMAIN)
 {
-  $u = new User();
-  $u->loadByEmail(urldecode($_POST['to']));
-  if ($u->id != -1)
+  $u = UserQuery::create()->findOneByEmail($_POST['to']);
+  if ($u != NULL)
   {
-    $db = new DB();
-    $message = $db->sanitize($_POST['message']);
-    $from = $db->sanitize(urldecode($_POST['from']));
-    $subject = $db->sanitize(urldecode($_POST['subject']));
-
-    $db->query("INSERT INTO `message` (`user`, `from`, `subject`, `message`) VALUES ('{$u->id}', '$from', '$subject', '$message');");
+    $msg = new Message();
+    $msg->setMessage($_POST['message']);
+    $msg->setFrom($_POST['from']);
+    $msg->setSubject($_POST['subject']);
+    $msg->setUserId($u->getId());
+    $msg->save();
   }
 }
 ?>

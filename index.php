@@ -15,8 +15,8 @@
 <head>
   <script type="text/javascript">
     //  var publicKey = "<?php //print $user->pubkey; ?>";
-    var name = "<?php print $user->name; ?>";
-    var email = "<?php print $user->email; ?>";
+    var name = "<?php print $user->getName(); ?>";
+    var email = "<?php print $user->getEmail(); ?>";
   </script>
   <script type="text/javascript" src="jquery.min.js"></script>
   <script type="text/javascript" src="openpgpjs/resources/openpgp.js"></script>
