@@ -20,17 +20,17 @@
   <table name="message" idMethod="native" phpName="Message">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="user_id" phpName="UserId" type="INTEGER" required="true" defaultValue="0"/>
-    <column name="from" phpName="From" type="LONGVARCHAR" required="true"/>
+    <column name="sender" phpName="Sender" type="LONGVARCHAR" required="true"/>
     <column name="subject" phpName="Subject" type="LONGVARCHAR" required="true"/>
     <column name="timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
-    <column name="message" phpName="Message" type="LONGVARCHAR"/>
+    <column name="mbody" phpName="MBody" type="LONGVARCHAR"/>
     <foreign-key foreignTable="user" name="message_ibfk_1">
       <reference local="user_id" foreign="id"/>
     </foreign-key>
     <index name="ix_id">
       <index-column name="id"/>
     </index>
-    <index name="user_id">
+    <index name="ix_user_id">
       <index-column name="user_id"/>
     </index>
     <vendor type="mysql">

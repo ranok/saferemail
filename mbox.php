@@ -10,8 +10,8 @@ if ($domain == SMAIL_DOMAIN)
   if ($u != NULL)
   {
     $msg = new Message();
-    $msg->setMessage($_POST['message']);
-    $msg->setFrom($_POST['from']);
+    $msg->setMBody($_POST['message']);
+    $msg->setSender($_POST['from']);
     $msg->setSubject($_POST['subject']);
     $msg->setUserId($u->getId());
     $msg->save();

@@ -44,7 +44,7 @@ if (count($messages))
         </span>
 
         <span class="mailbox_from" onclick="goto_message(<?php print $message->getId(); ?>)">
-          <?php print preg_replace('/ <.*>/', '', $message->getFrom()); ?>
+          <?php print preg_replace('/ <.*>/', '', $message->getSender()); ?>
         </span>
 
         <span class="mailbox_subject" onclick="goto_message(<?php print $message->getId(); ?>)">
@@ -56,7 +56,7 @@ if (count($messages))
         </span>
 
         <span class="mailbox_date">
-          <?php print $message->getTimestamp(); ?>
+          <?php print $message->getTimestamp()->format('Y-m-d H:i:s'); ?>
         </span>
 
       </li>

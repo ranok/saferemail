@@ -7,7 +7,6 @@ require_once('openpgpphp/lib/openpgp_crypt_aes_tripledes.php');
 
 if (!isset($_GET['method']))
 {
-
   exit();
 }
  
@@ -91,7 +90,7 @@ function get_message($id)
 
   if ($msg != NULL)
     {
-      print json_encode(Array("message" => $msg->getMessage(), "from" => $msg->getFrom(), "subject" => $msg->getSubject(), "timestamp" => $msg->getTimeStamp()));
+      print json_encode(Array("message" => $msg->getMBody(), "from" => $msg->getSender(), "subject" => $msg->getSubject(), "timestamp" => $msg->getTimeStamp()->format('Y-m-d H:i:s')));
     }
 }
 
@@ -113,8 +112,8 @@ function send_message($email, $subject, $message, $post)
 	  $u = UserQuery::create()->findOneByEmail($email);  
 	  
 	  $msg = new Message();
-	  $msg->setMessage($message);
-    	  $msg->setFrom($fromemail);
+	  $msg->setMBody($message);
+    	  $msg->setSender($fromemail);
     	  $msg->setSubject($subject);
 	  $msg->setUserId($u->getId());
 
