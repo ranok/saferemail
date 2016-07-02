@@ -16,24 +16,24 @@ $username = $exploded_email[0];
 
 if ($domain == SMAIL_DOMAIN)
 {
-  $u = new User();
-  $u->loadByEmail(strip_name($_POST['To']));
-  if ($u->id != -1)
+  $u = UserQuery::create()->findOneByEmail(strip_name($_POST['to']));
+  if ($u !== NULL)
   {
-    $db = new DB();
-    $message = $db->sanitize($_POST['body-plain']);
-    $from = $db->sanitize($_POST['From']);
-    $subject = $db->sanitize($_POST['Subject']);
-
     if (!preg_match('/-----BEGIN PGP MESSAGE-----/', $message))
       {
-	$key = OpenPGP_Message::parse(OpenPGP::unarmor($u->pubkey));
+	$key = OpenPGP_Message::parse(OpenPGP::unarmor($u->getPubkey));
 	$data = new OpenPGP_LiteralDataPacket($message, array('format' => 'u'));
 	$enc = OpenPGP_Crypt_AES_TripleDES::encrypt($key, new OpenPGP_Message(array($data)));
 	$message = OpenPGP::enarmor($enc->to_bytes(), "PGP MESSAGE");
       }
-    
-    $db->query("INSERT INTO `message` (`user`, `from`, `subject`, `message`) VALUES ('{$u->id}', '$from', '$subject', '$message');");
+
+    $msg = new Message();
+    $msg->setSender($_POST['From']);
+    $msg->setUserId($u->getId());
+    $msg->setSubject($_POST['Subject']);
+    $msg->setMBody($message);
+
+    $msg->save();
   }
 }
 ?>
